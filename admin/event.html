@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Manage Events | IEEE SB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    background:#05000a;
+    color:#e5e7eb;
+    overflow-x:hidden;
+    position:relative;
+}
+
+
+/* ================= BACKGROUND GLOW ================= */
+
+body::before,
+body::after{
+    content:"";
+    position:fixed;
+    width:400px;
+    height:400px;
+    background:radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%);
+    filter:blur(120px);
+    z-index:-1;
+}
+
+body::before{
+    top:10%;
+    left:-150px;
+}
+
+body::after{
+    bottom:10%;
+    right:-150px;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:260px;
+    padding:30px 25px;
+    background:rgba(255,255,255,0.04);
+    backdrop-filter:blur(20px);
+    border-right:1px solid rgba(168,85,247,0.15);
+}
+
+.profile{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.profile img{
+    width:85px;
+    height:85px;
+    border-radius:50%;
+    margin-bottom:10px;
+    border:2px solid rgba(168,85,247,0.5);
+}
+
+.profile h3{
+    font-size:16px;
+    background:linear-gradient(90deg,#a855f7,#e879f9);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.profile span{
+    font-size:12px;
+    opacity:0.6;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:12px 15px;
+    border-radius:12px;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:0.3s;
+    color:#c4b5fd;
+}
+
+.sidebar ul li:hover{
+    background:rgba(168,85,247,0.15);
+}
+
+
+/* ================= MAIN CONTENT ================= */
+
+.main{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.topbar h1{
+    font-size:26px;
+    background:linear-gradient(90deg,#a855f7,#e879f9);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.search{
+    padding:10px 20px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(168,85,247,0.2);
+    color:#c4b5fd;
+}
+
+
+/* ================= GRID LAYOUT ================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:400px 1fr;
+    gap:25px;
+    height:calc(100vh - 140px);
+}
+
+/* sticky form */
+
+.grid .card:first-child{
+    position:sticky;
+    top:0;
+    height:fit-content;
+}
+
+/* scroll events */
+
+.grid .card:last-child{
+    overflow-y:auto;
+    padding-right:10px;
+}
+
+
+/* ================= GLASS CARDS ================= */
+
+.card{
+    padding:25px;
+    border-radius:24px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(168,85,247,0.15);
+    transition:0.3s ease;
+    position:relative;
+    overflow:hidden;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 0 40px rgba(168,85,247,0.2);
+}
+
+/* shine animation */
+
+.card::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:60%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+    );
+    transform:skewX(-20deg);
+}
+
+.card:hover::after{
+    animation:shine 0.8s ease;
+}
+
+@keyframes shine{
+    to{ left:150%; }
+}
+
+
+/* ================= FORM ================= */
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    margin:12px 0;
+    border-radius:12px;
+    border:1px solid rgba(168,85,247,0.2);
+    background:rgba(255,255,255,0.06);
+    color:white;
+    outline:none;
+}
+
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(90deg,#5b21b6,#7c3aed);
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 20px rgba(168,85,247,0.4);
+}
+
+
+/* ================= EVENT CARD ================= */
+
+.event-card{
+    padding:15px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(168,85,247,0.15);
+    margin-bottom:15px;
+    transition:0.3s;
+}
+
+.event-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 0 25px rgba(168,85,247,0.2);
+}
+
+.event-card img{
+    width:100%;
+    max-height:200px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+
+.delete-btn{
+    background:#ff4d6d;
+}
+
+
+/* ================= HAMBURGER MENU ================= */
+
+.menu-btn{
+    display:none;
+    position:fixed;
+    top:18px;
+    right:18px;
+    width:45px;
+    height:45px;
+    border-radius:12px;
+    background:#5b21b6;
+    border:none;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    z-index:1100;
+
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:0 0 15px rgba(168,85,247,0.5);
+}
+
+.menu-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(6px);
+    opacity:0;
+    pointer-events:none;
+    transition:0.3s;
+    z-index:999;
+}
+
+.menu-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width:900px){
+
+body{
+    flex-direction:column;
+}
+
+.menu-btn{
+    display:flex;
+}
+
+/* sidebar drawer */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:-260px;
+    width:260px;
+    height:100vh;
+    background:#0b0015;
+    backdrop-filter:none;
+    border-right:1px solid rgba(168,85,247,0.25);
+    z-index:1000;
+    transition:0.3s ease;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.profile{
+    display:none;
+}
+
+.sidebar ul{
+    display:block;
+}
+
+.sidebar ul li{
+    margin-bottom:12px;
+}
+
+.main{
+    padding:80px 20px 20px 20px;
+}
+
+.grid{
+    grid-template-columns:1fr;
+    height:auto;
+}
+
+.grid .card:first-child{
+    position:relative;
+}
+
+}
+
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width:600px){
+
+button{
+    width:100%;
+}
+
+input, textarea{
+    padding:14px;
+}
+
+}
+.event-card h4{
+    margin-bottom:6px;
+    font-size:16px;
+    color:#e9d5ff;
+}
+
+.event-card p{
+    font-size:14px;
+    opacity:0.8;
+    margin-bottom:6px;
+}
+</style>
+</head>
+
+<body>
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="sidebar">
+    <div class="profile">
+    <img id="adminPhoto" src="https://visatieeesb-gray.vercel.app/paulantony.jpeg">
+    <h3 id="adminName">IEEE Admin</h3>
+    <span id="adminEmail">Event Manager</span>
+</div>
+    <ul>
+        <li onclick="window.location.href='dashboard.html'">Dashboard</li>
+        <li onclick="window.location.href='event.html'">Events</li>
+        <li onclick="window.location.href='gallery.html'">Gallery</li>
+        
+        <li id="logoutBtn">Logout</li>
+    </ul>
+</div>
+
+<div class="main">
+<button class="menu-btn" id="menuBtn">☰</button>
+    <div class="topbar">
+        <h1>Event Management</h1>
+        
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>Add New Event</h3>
+
+            <input type="text" id="title" placeholder="Event Title">
+            <input type="date" id="date">
+            <textarea id="description" placeholder="Event Description"></textarea>
+            <input type="text" id="registration" placeholder="Registration Link (optional)">
+            <input type="file" id="imageFile">
+            <button id="addEvent">Add Event</button>
+        </div>
+
+        <div class="card">
+            <h3>All Events</h3>
+            <div id="eventList"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import { 
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {  
+  collection, 
+  addDoc, 
+  getDocs, 
+  deleteDoc, 
+  doc 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ================= Auth Protection =================
+
+onAuthStateChanged(auth, (user) => {
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Admin Name
+  document.getElementById("adminName").innerText =
+      user.displayName || "IEEE Admin";
+
+  // Admin Email
+  document.getElementById("adminEmail").innerText =
+      user.email;
+
+  // Profile Photo (Cloudinary or default)
+  document.getElementById("adminPhoto").src =
+      user.photoURL || "https://i.imgur.com/2DhmtJ4.png";
+});
+
+// ================= Logout =================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (logoutBtn) {
+
+    logoutBtn.onclick = async () => {
+
+      try {
+
+        console.log("Logout clicked");
+
+        await signOut(auth);
+
+        window.location.href = "login.html";
+
+      } catch (error) {
+
+        console.error("Logout failed:", error);
+
+      }
+
+    };
+
+  }
+
+});
+const eventList = document.getElementById("eventList");
+/* ================= LOAD EVENTS ================= */
+
+async function loadEvents(){
+  eventList.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "events"));
+
+  snapshot.forEach(docSnap=>{
+    const data = docSnap.data();
+
+    const div = document.createElement("div");
+    div.classList.add("event-card");
+
+    div.innerHTML = `
+      ${data.image ? `<img src="${data.image}">` : ""}
+      <h4>${data.title}</h4>
+      <p><strong>Date:</strong> ${data.date}</p>
+      <p>${data.description || ""}</p>
+      <button class="delete-btn" data-id="${docSnap.id}">Delete</button>
+    `;
+
+    eventList.appendChild(div);
+  });
+
+  document.querySelectorAll(".delete-btn").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.getAttribute("data-id");
+      if(confirm("Delete this event?")){
+    await deleteDoc(doc(db,"events",id));
+}
+      loadEvents();
+    });
+  });
+}
+
+loadEvents();
+
+/* ================= ADD EVENT ================= */
+
+const addBtn = document.getElementById("addEvent");
+
+addBtn.addEventListener("click", async () => {
+
+  console.log("Button clicked");
+
+  const title = document.getElementById("title").value;
+  const date = document.getElementById("date").value;
+  const description = document.getElementById("description").value;
+  const registration = document.getElementById("registration").value;
+  const file = document.getElementById("imageFile").files[0];
+
+  if (!title || !date) {
+    alert("Title and Date required");
+    return;
+  }
+
+  addBtn.disabled = true;
+  addBtn.innerText = "Uploading...";
+
+  let imageURL = "";
+
+  try {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "ieee_events"); // Make sure this exists in Cloudinary
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dnbbyeel3/image/upload",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Cloudinary error:", data);
+        alert("Image upload failed. Check upload preset.");
+        addBtn.disabled = false;
+        addBtn.innerText = "Add Event";
+        return;
+      }
+
+      imageURL = data.secure_url || "";
+    }
+
+    await addDoc(collection(db, "events"), {
+      title,
+      date,
+      description,
+      registration,
+      image: imageURL || "",
+      createdAt: new Date()
+    });
+
+    document.getElementById("title").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("registration").value = "";
+    document.getElementById("imageFile").value = "";
+
+    loadEvents();
+
+  } catch (error) {
+    console.error("Error adding event:", error);
+  }
+
+  addBtn.disabled = false;
+  addBtn.innerText = "Add Event";
+});
+</script>
+<script>
+// Hamburger Toggle
+
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("menuOverlay");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+});
+
+/* close menu when clicking outside */
+
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+// close menu when clicking menu item
+
+document.querySelectorAll(".sidebar ul li:not(#logoutBtn)").forEach(item=>{
+  item.addEventListener("click",()=>{
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+});
+</script>
+</body>
+</html>
