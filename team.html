@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" sizes="32x32" href="LOGO2.png">
+<link rel="icon" sizes="16x16" href="LOGO2.png">
+<link rel="apple-touch-icon" href="LOGO2.png">
+<meta charset="UTF-8">
+<title>Team | IEEE VISAT Student Branch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= STAGGER EFFECT ================= */
+
+.team-grid .member-card{
+    transition-delay: calc(var(--i) * 0.08s);
+}
+
+/* ================= ROOT ================= */
+:root{
+    --bg-main:#05030f;
+    --bg-soft:#0b0720;
+    --purple-main:#430ebe;
+    --purple-soft:#bb4dea;
+    --text-main:#f1ecff;
+    --text-muted:#bfb8ea;
+    --white:#ffffff;
+}
+html{ scroll-behavior:smooth }
+
+/* ================= RESET ================= */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:"Segoe UI",system-ui,sans-serif;
+    background:linear-gradient(180deg,var(--bg-main),var(--bg-soft));
+    color:var(--text-main);
+    overflow-x:hidden;
+}
+/* ===== SOCIAL ICONS (HOVER ONLY) ===== */
+.member-card{
+    position:relative;
+}
+
+.socials{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:14px;
+    opacity:0;
+    transform:translateY(8px);
+    transition:all .3s ease;
+}
+
+.member-card:hover .socials{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.socials a{
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    font-size:14px;
+    text-decoration:none;
+    color:var(--white);
+    background:rgba(187,77,234,.25);
+    transition:background .3s ease, transform .3s ease;
+}
+
+.socials a:hover{
+    background:var(--purple-soft);
+    transform:scale(1.15);
+}
+
+
+/* ================= HEADER ================= */
+.header{
+    padding:22px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,3,15,.85);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+.header img{height:44px}
+.nav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.nav a{
+    color:var(--text-muted);
+    margin-left:26px;
+    text-decoration:none;
+    font-size:14px;
+}
+.nav a:hover{color:var(--white)}
+
+/* ================= PAGE TITLE ================= */
+.page-title{
+    text-align:center;
+    padding:90px 20px 40px;
+}
+.page-title h1{
+    font-size:42px;
+    background:linear-gradient(
+        90deg,
+        var(--purple-main),
+        var(--purple-soft),
+        var(--white)
+    );
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.page-title p{
+    margin-top:10px;
+    color:var(--text-muted);
+}
+
+/* ================= TEAM SECTION ================= */
+.team-section{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px 100px;
+}
+
+.team-group{
+    margin-bottom:70px;
+}
+.team-group h2{
+    font-size:28px;
+    margin-bottom:30px;
+}
+    .team-group .team-grid{
+    justify-items: center;
+}
+
+.team-group .member-card{
+    max-width: 260px;
+    width: 100%;
+}
+
+
+/* ================= TEAM GRID ================= */
+.team-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
+}
+
+.member-card{
+    background:rgba(255,255,255,.05);
+    border-radius:20px;
+    padding:28px 20px;
+    text-align:center;
+    transition:
+    transform .4s cubic-bezier(.22,1,.36,1),
+    box-shadow .4s ease;
+
+}
+.member-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(67,14,190,.35);
+}
+
+.member-card img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:16px;
+    border:3px solid var(--purple-soft);
+}
+
+
+.member-card h3{
+    margin-bottom:6px;
+}
+.member-card span{
+    font-size:14px;
+    color:var(--purple-soft);
+}
+.member-card p{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--text-muted);
+}
+
+/* ================= FOOTER ================= */
+.footer{
+    background:#070312;
+    padding:60px;
+}
+.footer-grid{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:40px;
+}
+.footer h4{margin-bottom:10px}
+.footer p,
+.footer a{
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:14px;
+}
+.footer a{
+    display:block;
+    margin-bottom:6px;
+}
+.footer a:hover{color:var(--white)}
+.footer-bottom{
+    text-align:center;
+    margin-top:40px;
+    font-size:13px;
+    color:var(--text-muted);
+}
+/* ================= HAMBURGER ================= */
+.menu-toggle{
+    display:none;
+    flex-direction:column;
+    gap:6px;
+    cursor:pointer;
+    z-index:200;
+}
+
+.menu-toggle span{
+    width:26px;
+    height:3px;
+    background:var(--white);
+    border-radius:4px;
+    transition:0.3s ease;
+}
+
+/* ================= MOBILE FIXES ONLY ================= */
+/* ================= MOBILE WITH HAMBURGER ================= */
+@media(max-width:900px){
+
+    .header{
+        padding:16px 20px;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+        position:relative;
+    }
+
+    .menu-toggle{
+        display:flex;
+    }
+
+    .nav{
+        position:absolute;
+        top:100%;
+        left:0;
+        width:100%;
+        background:rgba(5,3,15,0.98);
+        flex-direction:column;
+        align-items:center;
+        gap:22px;
+        padding:28px 0;
+        opacity:0;
+        transform:translateY(-10px);
+        pointer-events:none;
+        transition:0.3s ease;
+    }
+
+    .nav.active{
+        opacity:1;
+        transform:translateY(0);
+        pointer-events:auto;
+    }
+
+    .nav a{
+        font-size:15px;
+    }
+
+    .page-title{
+        padding:60px 16px 25px;
+    }
+
+    .page-title h1{
+        font-size:30px;
+    }
+
+    .team-section{
+        padding:30px 16px 80px;
+    }
+
+    .footer{
+        padding:35px 18px 25px;
+        text-align:center;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+        gap:24px;
+    }
+}
+
+/* ================= SCROLL REVEAL ================= */
+
+.reveal{
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(.22,1,.36,1);
+}
+
+.reveal.show{
+    opacity: 1;
+    transform: translateY(0);
+}
+/* ================= PAGE TRANSITION (ADDED ONLY) ================= */
+body{
+    opacity: 0;
+    animation: pageFadeIn 0.6s ease forwards;
+}
+
+@keyframes pageFadeIn{
+    to{ opacity: 1; }
+}
+
+body.page-exit{
+    animation: pageFadeOut 0.4s ease forwards;
+}
+
+@keyframes pageFadeOut{
+    to{ opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <a href="index.html"><img src="IEEELO.png" alt="IEEE VISAT Logo"></a>
+    <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<section class="page-title">
+    <h1>Our Team</h1>
+    <p>Meet the people behind IEEE VISAT Student Branch</p>
+</section>
+
+<section class="team-section">
+
+    
+   <!-- Executive Committee -->
+     <div class="team-group">
+        <h2>Executive Committee</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="malavika.jpeg">
+                <h3>Malavika KJ</h3>
+                <span>Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/malavika-kj-3948b7315" aria-label="LinkedIn">in</a>
+                </div>          
+            </div>
+
+
+            <div class="member-card">
+                <img src="Tom.jpeg">
+                <h3>Tomjo Vellaringattu</h3>
+                <span>Vice Chairperson</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+
+            </div>
+
+
+            <div class="member-card">
+                <img src="GladysManuel.jpeg">
+                <h3>Gladys Manuel</h3>
+                <span>Secretary</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/gladys-manuel-9580b4321?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+            <div class="member-card">
+                <img src="Jacob Mathew.jpg">
+                <h3>Jacob Mathew</h3>
+                <span>Treasurer</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/jacob-mathew-b82053398?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+            <div class="member-card">
+                <img src="paulantony.jpeg">
+                <h3>Paul Antony</h3>
+                <span>Technical Coordinator</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+            
+            <div class="member-card">
+                <img src="asha.jpeg">
+                <h3>Asha Sanalkumar</h3>
+                <span>Web Master</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/asha-sanalkumar-332811340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+            
+            
+
+
+
+            <div class="member-card">
+                <img src="ELIAS K ABRAHAM.JPG">
+                <h3>Elias K Abraham</h3>
+                <span>Event Coordinator</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/elias-abraham-b2927137a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+             <div class="member-card">
+                <img src="Albi.jpg">
+                <h3>Albi Philip</h3>
+                <span>MD Coordinator</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/albi-philip-312620254?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+            <div class="member-card">
+                <img src="Krishnajith.jpeg">
+                <h3>Krishnajith kS</h3>
+                <span>Design Lead</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/krishnajith-ks-196322339?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+            <div class="member-card">
+                <img src="lalkrishna.jpeg">
+                <h3>Lal Krishna</h3>
+                <span>Video Editor</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/lalkrishna-a-k-b1416237a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+            <div class="member-card">
+                <img src="Sajan.jpg">
+                <h3>Sajan Joy</h3>
+                <span>Social Media Lead</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/sajan-joy-397029374?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+<!-- Faculty Advisor --
+    <div class="team-group">
+        <h2>Faculty Advisor</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="member1.jpg">
+                <h3>Shibbina JS</h3>
+                <span>Branch Councelor</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Computer Society -->
+    <div class="team-group">
+        <h2>Computer Society</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="GladysManuel.jpeg">
+                <h3>Gladys Manuel</h3>
+                <span>Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/gladys-manuel-9580b4321?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="member-card">
+                <img src="TADRUPA CHOWDHURY.jpg">
+                <h3>Tadrupa Chowdhury</h3>
+                <span>Vice Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/tadrupa-chowdhury-1022a6382?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="Ann Ananya Tomy .jpg">
+                <h3>Ann Ananya Tomy</h3>
+                <span>Secretary</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/ann-ananya-tomy-281281376?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="sreehari.jpeg">
+                <h3>Sreehari G</h3>
+                <span>Treasurer</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Communications Society -->
+    <div class="team-group">
+        <h2>Communications Society</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="Tom.jpeg">
+                <h3>Tomjo Vellaringattu</h3>
+                <span>Chairperson</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="Abhinand rajesh.jpeg">
+                <h3>Abhinand Rajesh</h3>
+                <span>Vice Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/abhinand-rajesh-77608837a?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="member-card">
+                <img src="Andrews Anna jacob.jpg">
+                <h3>Andrews Anna Jacob</h3>
+                <span>Secretary</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/andrews-anna-jacob-52941837a?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+            <div class="member-card">
+                <img src="yokshan.jpeg">
+                <h3>Yokshan P.A</h3>
+                <span>Treasurer</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/yokshan-p-a-016b1a3a4?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+    <!-- Women in Engineering -->
+    <div class="team-group">
+        <h2>Women in Engineering</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="SheethalSuresh.jpeg">
+                <h3>Sheethal Suresh</h3>
+                <span>Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/sheethal-suresh-5796b237a?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="member-card">
+                <img src="sreenandha.jpeg">
+                <h3>Sreenanda Binoj</h3>
+                <span>Vice Chairperson</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="rifathabassum.jpeg">
+                <h3>Rifa Thabassum</h3>
+                <span>Secretary</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/rifa-thabassum-18708837a?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="nada hanan.jpeg">
+                <h3>Nada Hanan</h3>
+                <span>Treasurer</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Power and Energy Society -->
+    <div class="team-group">
+        <h2>Power and Energy Society</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="Jacob Mathew.jpg">
+                <h3>Jacob Mathew</h3>
+                <span>Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/jacob-mathew-b82053398?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="member-card">
+                <img src="athul.jpeg">
+                <h3>R Athul Vinayak</h3>
+                <span>Vice Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/r-athul-vinayak-697a58381?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="member-card">
+                <img src="AmalAnil.jpeg">
+                <h3>Amal Anil</h3>
+                <span>Secretary</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/amal-anil-365285376?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="Veedangirishan.jpeg">
+                <h3>Vedan Gireesh</h3>
+                <span>Treasurer</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Robotics and Automation Society -->
+    <div class="team-group">
+        <h2>Robotics and Automation Society</h2>
+        <div class="team-grid">
+            <div class="member-card">
+                <img src="asha.jpeg">
+                <h3>Asha Sanalkumar</h3>
+                <span>Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/asha-sanalkumar-332811340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="member-card">
+                <img src="Ann Ananya Tomy .jpg">
+                <h3>Ann Ananya Tomy</h3>
+                <span>Vice Chairperson</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/ann-ananya-tomy-281281376?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+            <div class="member-card">
+                <img src="payal.jpeg">
+                <h3>Payal Dadaso Chavan</h3>
+                <span>Secretary</span>
+                <div class="socials">
+    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+
+
+
+
+            <div class="member-card">
+                <img src="HARINANDANA N M .jpg">
+                <h3>Harinandana N M</h3>
+                <span>Treasurer</span>
+                <div class="socials">
+    <a href="https://www.linkedin.com/in/harinandana-n-m-275a4237a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <h4>IEEE VISAT Student Branch</h4>
+            <p>VISAT Engineering College<br>Kerala, India</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="https://www.ieee.org/">IEEE</a>
+            <a href="https://ieeexplore.ieee.org/Xplore/home.jsp">IEEE Xplore</a>
+            <a href="https://ieeekerala.org/">IEEE Kerala Section</a>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <p>Email: ieeevisat@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+  © 2026 IEEE VISAT Student Branch · All Rights Reserved<br>
+  Created by Paul Antony
+</div>
+
+
+</footer>
+<!-- ================= REVEAL SCRIPT ================= -->
+<script>
+const revealElements = document.querySelectorAll(
+    '.team-group, .member-card'
+);
+
+revealElements.forEach(el => el.classList.add('reveal'));
+
+const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
+            }
+        });
+    },
+    {
+        threshold: 0.12,
+        rootMargin: "0px 0px -40px 0px"
+    }
+);
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        revealElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if(rect.top < window.innerHeight - 40){
+                el.classList.add('show');
+            }
+        });
+    }, 200);
+});
+</script>
+
+<!-- ================= STAGGER INDEX ================= -->
+<script>
+document.querySelectorAll('.team-grid').forEach(grid => {
+    grid.querySelectorAll('.member-card').forEach((card, i) => {
+        card.style.setProperty('--i', i);
+    });
+});
+</script>
+
+<!-- ================= HAMBURGER ================= -->
+<script>
+const toggle = document.getElementById("menu-toggle");
+const nav = document.querySelector(".nav");
+
+toggle.addEventListener("click", () => {
+    nav.classList.toggle("active");
+});
+
+document.querySelectorAll(".nav a").forEach(link => {
+    link.addEventListener("click", () => {
+        nav.classList.remove("active");
+    });
+});
+</script>
+<script>
+
+/* ================= PAGE TRANSITION SCRIPT (ADDED ONLY) ================= */
+document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    // Internal navigation only
+    if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('http') &&
+        !href.startsWith('mailto')
+    ) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 400);
+        });
+    }
+});
+</script>
+
+</body>
+</html>
+
+

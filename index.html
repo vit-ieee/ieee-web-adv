@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" sizes="32x32" href="LOGO2.png">
+<link rel="icon" sizes="16x16" href="LOGO2.png">
+<link rel="apple-touch-icon" href="LOGO2.png">
+<meta charset="UTF-8">
+<title>IEEE VISAT Student Branch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* ================= ROOT VARIABLES ================= */
+:root{
+    --bg-main:#05030f;
+    --bg-soft:#0b0720;
+    --purple-main:#430ebe;
+    --purple-soft:#bb4dea;
+    --text-main:#f1ecff;
+    --text-muted:#bfb8ea;
+    --white:#ffffff;
+}
+/* STEP 5 – HOVER DEPTH */
+.card,
+.preview,
+.event-card{
+    transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        box-shadow .35s ease;
+}
+
+.card:hover,
+.preview:hover,
+.event-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 22px 44px rgba(0,0,0,.28);
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+
+/* ================= RESET ================= */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:"Segoe UI",system-ui,sans-serif;
+    background:linear-gradient(180deg,var(--bg-main),var(--bg-soft));
+    color:var(--text-main);
+    line-height:1.6;
+    overflow-x:hidden;
+}
+
+/* ================= HEADER ================= */
+.header{
+    padding:22px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,3,15,0.8);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:46px;cursor:pointer}
+.nav{display:flex;gap:28px}
+.nav a{color:var(--text-muted);text-decoration:none;font-size:14px}
+.nav a:hover{color:var(--white)}
+
+/* ================= HERO ================= */
+.hero{
+    position: relative;
+    max-width: 1200px;
+    margin: auto;
+    padding: 120px 60px 110px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.hero-content{
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.tech-visual{
+    position:absolute;
+    left:-160px;
+    top:50%;
+    transform:translateY(-50%);
+    width:420px;
+    height:420px;
+    pointer-events:none;
+}
+.tech-visual::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,rgba(187,77,234,0.45),rgba(67,14,190,0.35),transparent 70%);
+    filter:blur(80px);
+}
+.tech-visual::after{
+    content:"";
+    position:absolute;
+    left:180px;
+    top:60px;
+    width:3px;
+    height:300px;
+    background:linear-gradient(180deg,transparent,var(--purple-soft),transparent);
+    opacity:.7;
+}
+.tech-visual .node{
+    position:absolute;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--purple-soft);
+    box-shadow:0 0 18px rgba(187,77,234,.8);
+    animation:floatNode 6s infinite ease-in-out;
+}
+.tech-visual.right{
+    left: auto;
+    right: -160px;
+    transform: translateY(-50%) scaleX(-1);
+}
+
+.tech-visual .node:nth-child(1){top:90px;left:130px}
+.tech-visual .node:nth-child(2){top:210px;left:190px;animation-delay:2s}
+.tech-visual .node:nth-child(3){top:320px;left:150px;animation-delay:4s}
+
+@keyframes floatNode{
+    0%{transform:translateY(0);opacity:.4}
+    50%{transform:translateY(-18px);opacity:1}
+    100%{transform:translateY(0);opacity:.4}
+}
+
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px)}
+    to{opacity:1;transform:translateY(0)}
+}
+.hero h1{
+    font-size:56px;
+    line-height:1.15;
+
+    background:linear-gradient(
+        90deg,
+        var(--purple-main),
+        var(--purple-soft),
+        var(--white),
+        var(--purple-soft),
+        var(--purple-main)
+    );
+
+    background-size:300% 300%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:gradientFlow 8s ease-in-out infinite;
+}
+
+
+@keyframes gradientFlow{
+    0%{
+        background-position:0% 50%;
+    }
+    50%{
+        background-position:100% 50%;
+    }
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+
+.hero p{margin-top:22px;font-size:18px;color:var(--text-muted)}
+
+.cta{margin-top:36px}
+.cta a{
+    padding:14px 34px;
+    border-radius:40px;
+    background:linear-gradient(135deg,var(--purple-main),var(--purple-soft));
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.stats{margin-top:34px;display:flex;gap:28px;flex-wrap:wrap}
+.stat{font-size:14px;color:var(--text-muted)}
+.stat strong{color:var(--white)}
+
+.logo-panel{
+    background: none;
+}
+
+.logo-panel img{width:140px}
+
+/* ================= SECTIONS ================= */
+.section{
+    max-width:1200px;
+    margin:auto;
+    padding:90px 60px;
+}
+.section h2{font-size:32px;margin-bottom:14px}
+.section p{max-width:720px;color:var(--text-muted)}
+
+.cards{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+.card{
+    background:rgba(255,255,255,.04);
+    padding:30px;
+    border-radius:18px;
+}
+
+/* ================= PREVIEW GRID ================= */
+.preview-grid{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+    align-items:start;   /* 🚨 IMPORTANT */
+}
+/* ===== HOMEPAGE GALLERY FLEX FIX ===== */
+#homeGallery{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+#homeGallery .preview{
+    width: 320px;
+    max-width: 100%;
+}
+
+.preview{
+    background:rgba(255,255,255,0.05);
+    border-radius:18px;
+    overflow:hidden;
+}
+
+/* 🚨 REMOVE FLEX + HEIGHT */
+.preview a{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+}
+
+/* FULL IMAGE – NO STRETCH */
+.preview img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* TEXT */
+.preview div{
+    padding:20px;
+    text-align:center;
+}
+/* ================= UPCOMING EVENTS – NO STRETCH ================= */
+
+.event-grid{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:30px;
+    align-items:start;        /* 🚨 prevents grid stretching */
+}
+
+.event-card{
+    max-width:320px;
+    margin-inline:auto;
+}
+
+
+.event-card a{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+}
+
+/* FULL IMAGE – NO CROP – NO STRETCH */
+.event-card img{
+    width:100%;
+    height:auto;              /* key line */
+    display:block;
+}
+
+/* TITLE AREA */
+.event-card .event-info{
+    padding:20px;
+    text-align:center;
+}
+
+
+/* ================= CTA BANNER ================= */
+.cta-banner{
+    background:linear-gradient(135deg,var(--purple-main),var(--purple-soft));
+    padding:80px 20px;
+    text-align:center;
+}
+.cta-banner h2{margin-bottom:16px}
+.cta-banner a{
+    background:#fff;
+    color:#000;
+    padding:14px 32px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* ================= SECTION BUTTON ================= */
+.section-btn{
+    margin-top:40px;
+    text-align:center;
+}
+.section-btn a{
+    display:inline-block;
+    padding:12px 32px;
+    border-radius:30px;
+    background:linear-gradient(135deg,var(--purple-main),var(--purple-soft));
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+    box-shadow:0 14px 30px rgba(67,14,190,.4);
+}
+.section-btn a:hover{transform:translateY(-2px)}
+.cta-banner h2{margin-bottom:16px}
+.cta-banner a{
+    background:#fff;
+    color:#000;
+    padding:14px 32px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* ================= FOOTER ================= */
+.footer{background:#070312;padding:60px}
+.footer-grid{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:40px;
+}
+.footer h4{margin-bottom:10px}
+.footer a{display:block;color:var(--text-muted);text-decoration:none;margin-bottom:6px}
+.footer a:hover{color:var(--white)}
+.footer-bottom{text-align:center;margin-top:40px;font-size:13px;color:var(--text-muted)}
+
+/* ================= MOBILE ================= */
+/* ================= MOBILE REFINED ================= */
+/* ================= HAMBURGER ================= */
+.menu-toggle{
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.menu-toggle span{
+    width: 26px;
+    height: 3px;
+    background: var(--white);
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+/* ================= MOBILE WITH HAMBURGER ================= */
+@media (max-width: 900px){
+
+    .header{
+        padding: 16px 20px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* Show hamburger */
+    .menu-toggle{
+        display: flex;
+    }
+
+    /* Hide nav initially */
+    .nav{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(5,3,15,0.98);
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 30px 0;
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s ease;
+    }
+
+    .nav.active{
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .hero{
+    padding: 100px 20px 60px;
+    text-align: center;
+    }
+
+
+    .hero h1{
+        font-size: 36px;
+    }
+
+    .tech-visual,
+    .logo-panel{
+        display: none;
+    }
+
+    .section{
+        padding: 70px 20px;
+        text-align: center;
+    }
+
+    .cards{
+        grid-template-columns: 1fr;
+    }
+
+    .event-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .preview-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .footer{
+        padding: 50px 20px 30px;
+        text-align: center;
+    }
+
+    .footer-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ================= PAGE TRANSITION (ADDED ONLY) ================= */
+body{
+    opacity: 0;
+    animation: pageFadeIn 0.6s ease forwards;
+}
+
+@keyframes pageFadeIn{
+    to{ opacity: 1; }
+}
+
+body.page-exit{
+    animation: pageFadeOut 0.4s ease forwards;
+}
+
+@keyframes pageFadeOut{
+    to{ opacity: 0; }
+}
+/* STEP 2 – SCROLL REVEAL BASE */
+.reveal{
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 0.9s ease,
+        transform 0.9s cubic-bezier(.22,1,.36,1);
+}
+
+.reveal.active{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="brand">
+        <a href="index.html"><img src="IEEELO.png" alt="IEEE VISAT Logo"></a>
+    </div>
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <div class="menu-toggle" id="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+</header>
+
+<section class="hero">
+    <div class="tech-visual">
+        <span class="node"></span>
+        <span class="node"></span>
+        <span class="node"></span>
+    </div>
+    <div class="tech-visual right">
+    <span class="node"></span>
+    <span class="node"></span>
+    <span class="node"></span>
+</div>
+
+    
+
+    <div class="hero-content">
+        <h1>IEEE VISAT<br>Student Branch</h1>
+        <p>A professional student organization dedicated to innovation, leadership, and technical excellence.</p>
+        <div class="cta">
+    <a href="#vision">Explore Our Vision</a>
+</div>
+        <div class="stats">
+    <div class="stat">
+        <strong class="counter" data-target="100">0</strong>+ Members
+    </div>
+    <div class="stat">
+        <strong class="counter" data-target="30">0</strong>+ Events
+    </div>
+    <div class="stat">
+        Since <strong class="counter" data-target="2015">0</strong>
+    </div>
+</div>
+
+    </div>
+    
+
+    <div class="logo-panel">
+        <img src="LOG.png" alt="">
+    </div>
+</section>
+
+<section class="section">
+    <h2>Why IEEE?</h2>
+    <div class="cards">
+        <div class="card"><h3>Global Recognition</h3><p>World’s largest technical professional organization.</p></div>
+        <div class="card"><h3>Skill Development</h3><p>Hands-on workshops, projects, and seminars.</p></div>
+        <div class="card"><h3>Professional Network</h3><p>Connect with industry experts and peers worldwide.</p></div>
+        <div class="card"><h3>Leadership</h3><p>Develop leadership and teamwork skills.</p></div>
+        <div class="card"><h3>Innovation & Technology</h3><p>Access the latest technologies, research trends, and innovations in engineering and computing.</p></div>
+        <div class="card"><h3>Career Opportunities</h3><p>Internships, job opportunities, industry exposure, and career guidance support.</p></div>
+    </div>
+</section>
+
+<section class="section" id="vision">
+    <h2>Our Aim & Vision</h2>
+    <div class="cards">
+        <div class="card">
+            <img src="technicalexcellence.jpg" alt="Technical Excellence">
+            <h3>Technical Excellence</h3><p>To inspire students with strong technical knowledge and innovative thinking in emerging technologies.</p>
+        </div>
+        <div class="card">
+            <img src="Continuouslearning.png" alt="Continuous Learning">
+            <h3>Continuous Learning</h3><p>To provide quality learning opportunities through workshops, seminars, and technical events.</p>
+        </div>
+        <div class="card">
+            <img src="Practical Experience.jpg" alt="Practical Experience">
+            <h3>Practical Experience</h3><p>To encourage hands-on learning through real-world projects, hackathons, and competitions.</p>
+        </div>
+        <div class="card">
+            <img src="Industry Connection.jpg" alt="Industry Connection">
+            <h3>Industry Connection</h3><p>To bridge the gap between academics and industry by connecting students with professionals and the global IEEE network.</p>
+        </div>
+        <div class="card">
+            <img src="Leadership Development.jpg" alt="Leadership Development">
+            <h3>Leadership Development</h3><p>To nurture leadership, teamwork, and professional skills among student members.</p>
+        </div>
+        <div class="card">
+            <img src="Social Responsibility.jpg" alt="Social Responsibility">
+            <h3>Social Responsibility</h3><p>To contribute positively to society through technology-driven initiatives and community service.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Upcoming Events</h2>
+    <div class="event-grid">
+    <div class="event-card">
+        <a href="href=events.html">
+            <img src="comingsoon.jpg" alt="comingsoon">
+            <div class="event-info">
+                <h4>coming soon</h4>
+            </div>
+        </a>
+    </div>
+</div>
+
+    <div class="section-btn">
+        <a href="events.html">View All Events</a>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Gallery</h2>
+    <div class="preview-grid" id="homeGallery"></div>
+    <div class="section-btn">
+        <a href="gallery.html">View Full Gallery</a>
+    </div>
+</section>
+
+<section class="cta-banner">
+    <h2>Be part of a global community shaping the future of technology.</h2>
+    <a href="https://www.ieee.org/">Join Us Today</a>
+</section>
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <h4>IEEE VISAT Student Branch</h4>
+            <p>VISAT Engineering College<br>Kerala, India</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="https://www.ieee.org/">IEEE</a>
+            <a href="https://ieeexplore.ieee.org/Xplore/home.jsp">IEEE Xplore</a>
+            <a href="https://ieeekerala.org/">IEEE Kerala Section</a>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <p>Email: ieeevisat@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+  © 2026 IEEE VISAT Student Branch · All Rights Reserved<br>
+  <a href="admin/login.html">Created by Paul Antony</a>
+</div>
+</footer>
+<script>
+
+/* ================= PAGE TRANSITION SCRIPT (ADDED ONLY) ================= */
+document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    // Internal navigation only
+    if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('http') &&
+        !href.startsWith('mailto')
+    ) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 400);
+        });
+    }
+});
+</script>
+<script>
+const toggle = document.getElementById("menu-toggle");
+const nav = document.querySelector(".nav");
+
+toggle.addEventListener("click", () => {
+    nav.classList.toggle("active");
+});
+</script>
+
+<script>
+const counters = document.querySelectorAll('.counter');
+let counterStarted = false;
+
+const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !counterStarted) {
+            counterStarted = true;
+
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 1500;
+                const increment = target / (duration / 16);
+
+                let current = 0;
+
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+
+                updateCounter();
+            });
+        }
+    });
+}, { threshold: 0.4 });
+
+counterObserver.observe(document.querySelector('.stats'));
+</script>
+
+<script>
+/* STEP 3 – ADD REVEAL CLASS */
+document.querySelectorAll(
+    '.section, .card, .preview, .event-card'
+).forEach(el => el.classList.add('reveal'));
+</script>
+<script>
+/* STEP 4 – SCROLL OBSERVER */
+const observer = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                entry.target.classList.add('active');
+            }
+        });
+    },
+    { threshold: 0.12 }
+);
+
+document.querySelectorAll('.reveal')
+    .forEach(el => observer.observe(el));
+</script>
+<script>
+/* STEP 6 – SOFT PARALLAX */
+window.addEventListener('scroll', () => {
+    const hero = document.querySelector('.hero');
+    if(hero){
+        hero.style.transform = `translateY(${window.scrollY * 0.03}px)`;
+    }
+});
+</script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAfo4Q0J5NDvarN4WZJ2youBV3rB7YpPpw",
+  authDomain: "ieee-visat-website-69d0c.firebaseapp.com",
+  projectId: "ieee-visat-website-69d0c",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const homeGallery = document.getElementById("homeGallery");
+
+function shuffleArray(array){
+  for(let i = array.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+async function loadHomeGallery(){
+homeGallery.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db,"gallery"));
+  let images = [];
+
+  snapshot.forEach(doc=>{
+    images.push(doc.data());
+  });
+
+  if(images.length === 0) return;
+
+  shuffleArray(images);
+
+  const randomThree = images.slice(0,3);
+
+  randomThree.forEach(data=>{
+    homeGallery.innerHTML += `
+      <div class="preview">
+        <img src="${data.imageUrl}">
+      </div>
+    `;
+  });
+}
+loadHomeGallery();
+</script>
+    
+</body>
+</html>
+
+

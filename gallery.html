@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" sizes="32x32" href="LOGO2.png">
+<link rel="icon" sizes="16x16" href="LOGO2.png">
+<link rel="apple-touch-icon" href="LOGO2.png">
+<meta charset="UTF-8">
+<title>Gallery | IEEE VISAT Student Branch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= ROOT ================= */
+:root{
+    --bg-main:#05030f;
+    --bg-soft:#0b0720;
+    --purple-main:#430ebe;
+    --purple-soft:#bb4dea;
+    --text-main:#f1ecff;
+    --text-muted:#bfb8ea;
+    --white:#ffffff;
+}
+
+/* ================= RESET ================= */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:"Segoe UI",system-ui,sans-serif;
+    background:linear-gradient(180deg,var(--bg-main),var(--bg-soft));
+    color:var(--text-main);
+    overflow-x:hidden;
+}
+
+/* ================= HEADER ================= */
+.header{
+    padding:22px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,3,15,0.85);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+.header img{height:44px}
+.nav{
+    display:flex;
+    flex-wrap:wrap; /* ✅ mobile wrap */
+    justify-content:center;
+}
+.nav a{
+    color:var(--text-muted);
+    margin-left:26px;
+    text-decoration:none;
+    font-size:14px;
+}
+.nav a:hover{color:var(--white)}
+
+/* ================= PAGE TITLE ================= */
+.page-title{
+    text-align:center;
+    padding:90px 20px 40px;
+}
+.page-title h1{
+    font-size:42px;
+    background:linear-gradient(
+        90deg,
+        var(--purple-main),
+        var(--purple-soft),
+        var(--white)
+    );
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.page-title p{
+    margin-top:12px;
+    color:var(--text-muted);
+    font-size:15px;
+}
+
+/* ================= GALLERY GRID ================= */
+.gallery{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px 100px;
+    columns:4;
+    column-gap:20px;
+}
+@media(max-width:1100px){.gallery{columns:3}}
+@media(max-width:800px){.gallery{columns:2}}
+@media(max-width:500px){.gallery{columns:1}}
+
+.photo{
+    break-inside:avoid;
+    margin-bottom:20px;
+    border-radius:18px;
+    overflow:hidden;
+    background:rgba(255,255,255,.05);
+    opacity:0;
+    transform:translateY(20px);
+    animation:fadeUp .6s ease forwards;
+}
+.photo img{
+    width:100%;
+    display:block;
+    transition:transform .5s ease;
+}
+.photo:hover img{
+    transform:scale(1.05);
+}
+.caption{
+    padding:12px 14px;
+    font-size:14px;
+    color:var(--text-muted);
+}
+
+/* Fade animation */
+@keyframes fadeUp{
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* ================= EMPTY / LOADING ================= */
+.status{
+    text-align:center;
+    padding:80px 20px;
+    color:var(--text-muted);
+    font-size:15px;
+}
+
+/* ================= FOOTER ================= */
+.footer{
+    background:#070312;
+    padding:60px;
+}
+.footer-grid{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:40px;
+}
+.footer h4{margin-bottom:10px}
+.footer p,
+.footer a{
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:14px;
+}
+.footer a{
+    display:block;
+    margin-bottom:6px;
+}
+.footer a:hover{color:var(--white)}
+.footer-bottom{
+    text-align:center;
+    margin-top:40px;
+    font-size:13px;
+    color:var(--text-muted);
+}
+/* ================= HAMBURGER ================= */
+.menu-toggle{
+    display:none;
+    flex-direction:column;
+    gap:6px;
+    cursor:pointer;
+    z-index:200;
+}
+
+.menu-toggle span{
+    width:26px;
+    height:3px;
+    background:var(--white);
+    border-radius:4px;
+    transition:0.3s ease;
+}
+
+
+/* ================= MOBILE HANDBURGER================= */
+
+@media(max-width:900px){
+
+    .header{
+        padding:16px 20px;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+        position:relative;
+    }
+
+    /* Show hamburger */
+    .menu-toggle{
+        display:flex;
+    }
+
+    /* Dropdown menu below header */
+    .nav{
+        position:absolute;
+        top:100%;
+        left:0;
+        width:100%;
+        background:rgba(5,3,15,0.98);
+
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:22px;
+        padding:28px 0;
+
+        opacity:0;
+        transform:translateY(-10px);
+        pointer-events:none;
+        transition:0.3s ease;
+    }
+
+    .nav.active{
+        opacity:1;
+        transform:translateY(0);
+        pointer-events:auto;
+    }
+
+    .nav a{
+        font-size:15px;
+        margin-left:0; /* important */
+    }
+
+    .page-title{
+        padding:60px 16px 25px;
+    }
+
+    .page-title h1{
+        font-size:30px;
+    }
+
+    .footer{
+        padding:35px 18px 25px;
+        text-align:center;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+        gap:24px;
+    }
+}
+
+
+/* ================= SCROLL TO TOP ================= */
+.scroll-top{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    font-size:20px;
+
+    background:linear-gradient(135deg,var(--purple-main),var(--purple-soft));
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.4);
+
+    opacity:0;
+    pointer-events:none;
+    transition:0.3s ease;
+    z-index:500;
+}
+
+.scroll-top.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.scroll-top:hover{
+    transform:translateY(-3px);
+}
+
+/* ================= PAGE TRANSITION (ADDED ONLY) ================= */
+body{
+    opacity: 0;
+    animation: pageFadeIn 0.6s ease forwards;
+}
+
+@keyframes pageFadeIn{
+    to{ opacity: 1; }
+}
+
+body.page-exit{
+    animation: pageFadeOut 0.4s ease forwards;
+}
+
+@keyframes pageFadeOut{
+    to{ opacity: 0; }
+}
+/* ================= LIGHTBOX ================= */
+.lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease;
+    z-index:9999;
+}
+
+.lightbox.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.lightbox img{
+    max-width:90%;
+    max-height:85%;
+    border-radius:16px;
+    transform:scale(.9);
+    transition:transform .3s ease;
+}
+
+.lightbox.show img{
+    transform:scale(1);
+}
+
+.lightbox-close{
+    position:absolute;
+    top:30px;
+    right:40px;
+    font-size:36px;
+    color:#fff;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <a href="index.html">
+        <img src="IEEELO.png" alt="IEEE VISAT Logo">
+    </a>
+
+    <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="nav" id="nav">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<section class="page-title">
+    <h1>Gallery</h1>
+    <p>Moments from our events, workshops, and activities</p>
+</section>
+
+<div id="status" class="status">Loading gallery…</div>
+<div id="gallery" class="gallery"></div>
+<!-- ================= LIGHTBOX ================= -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Preview">
+</div>
+<button id="scrollTopBtn" class="scroll-top">↑</button>
+
+
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <h4>IEEE VISAT Student Branch</h4>
+            <p>VISAT Engineering College<br>Kerala, India</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="https://www.ieee.org/">IEEE</a>
+            <a href="https://ieeexplore.ieee.org/Xplore/home.jsp">IEEE Xplore</a>
+            <a href="https://ieeekerala.org/">IEEE Kerala Section</a>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <p>Email: ieeevisat@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+  © 2026 IEEE VISAT Student Branch · All Rights Reserved<br>
+  Created by Paul Antony
+</div>
+</footer>
+
+
+    
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAfo4Q0J5NDvarN4WZJ2youBV3rB7YpPpw",
+  authDomain: "ieee-visat-website-69d0c.firebaseapp.com",
+  projectId: "ieee-visat-website-69d0c",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const galleryContainer = document.getElementById("gallery");
+const status = document.getElementById("status");
+
+async function loadGallery(){
+
+  const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  galleryContainer.innerHTML = "";
+  status.style.display = "none";
+
+  snapshot.forEach((doc, i) => {
+    const data = doc.data();
+
+    const div = document.createElement("div");
+    div.className = "photo";
+    div.style.animationDelay = `${i * 0.05}s`;
+
+    div.innerHTML = `
+      <img src="${data.imageUrl}" loading="lazy">
+      ${data.caption ? `<div class="caption">${data.caption}</div>` : ""}
+    `;
+
+    galleryContainer.appendChild(div);
+  });
+
+  if(!galleryContainer.children.length){
+    status.style.display = "block";
+    status.innerText = "No images yet.";
+  }
+}
+
+loadGallery();
+
+</script>
+<script>
+/* ================= PAGE TRANSITION SCRIPT (ADDED ONLY) ================= */
+document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    // Internal navigation only
+    if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('http') &&
+        !href.startsWith('mailto')
+    ) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 400);
+        });
+    }
+});
+</script>
+<script>
+/* ================= LIGHTBOX SCRIPT ================= */
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const closeBtn = document.querySelector(".lightbox-close");
+
+// Open image on click
+document.addEventListener("click", function(e){
+    if(e.target.matches(".photo img")){
+        lightboxImg.src = e.target.src;
+        lightbox.classList.add("show");
+    }
+});
+
+// Close on X click
+closeBtn.addEventListener("click", function(){
+    lightbox.classList.remove("show");
+});
+
+// Close on background click
+lightbox.addEventListener("click", function(e){
+    if(e.target === lightbox){
+        lightbox.classList.remove("show");
+    }
+});
+</script>
+<script>
+const toggle = document.getElementById("menu-toggle");
+const nav = document.getElementById("nav");
+
+toggle.addEventListener("click", () => {
+    nav.classList.toggle("active");
+});
+
+/* Auto close on link click */
+document.querySelectorAll(".nav a").forEach(link => {
+    link.addEventListener("click", () => {
+        nav.classList.remove("active");
+    });
+});
+
+</script>
+<script>
+const scrollBtn = document.getElementById("scrollTopBtn");
+
+// Show button after scrolling 400px
+window.addEventListener("scroll", () => {
+    if(window.scrollY > 10){
+        scrollBtn.classList.add("show");
+    } else {
+        scrollBtn.classList.remove("show");
+    }
+});
+
+// Smooth scroll to top
+scrollBtn.addEventListener("click", () => {
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+});
+</script>
+
+</body>
+</html>
+
+
