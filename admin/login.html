@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login | IEEE VISAT SB</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#070019;
+    color:#fff;
+}
+
+/* SPACE CANVAS */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* GLASS LOGIN CARD */
+.login-card{
+    width:380px;
+    padding:50px 40px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:25px;
+    box-shadow:0 0 50px rgba(124,58,237,0.6);
+    text-align:center;
+    animation:fadeIn 1.5s ease forwards;
+    opacity:0;
+}
+
+@keyframes fadeIn{
+    to{opacity:1;}
+}
+
+.login-card h2{
+    font-size:2rem;
+    margin-bottom:10px;
+    background:linear-gradient(90deg,#7c3aed,#a855f7);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.login-card p{
+    font-size:0.9rem;
+    margin-bottom:30px;
+    opacity:0.8;
+}
+
+/* INPUTS */
+.input-group{
+    margin-bottom:20px;
+    text-align:left;
+}
+
+.input-group label{
+    font-size:0.85rem;
+    opacity:0.8;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    outline:none;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.input-group input:focus{
+    border:1px solid #a855f7;
+    box-shadow:0 0 15px rgba(168,85,247,0.6);
+}
+
+/* BUTTON */
+.login-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(90deg,#5b21b6,#7c3aed);
+    color:white;
+    box-shadow:0 0 25px rgba(124,58,237,0.8);
+    transition:0.3s;
+}
+
+.login-btn:hover{
+    transform:scale(1.05);
+}
+
+/* ERROR MESSAGE */
+#error{
+    margin-top:15px;
+    color:#ff4d6d;
+    font-size:0.9rem;
+    display:none;
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+
+<div class="login-card">
+    <h2>Admin Login</h2>
+    <p>IEEE VISAT Student Branch</p>
+
+    <div class="input-group">
+        <label>Email</label>
+        <input type="text" id="username" placeholder="Enter Email">
+    </div>
+
+    <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter password">
+    </div>
+
+    <button class="login-btn">Login</button>
+
+    <div id="error"></div>
+</div>
+
+<script type="module">
+
+/* =========================
+   SPACE BACKGROUND
+========================= */
+
+const canvas = document.getElementById("space");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+let stars = [];
+let mouse = { x: null, y: null };
+
+window.addEventListener("mousemove", (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+});
+
+for (let i = 0; i < 150; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(s => {
+        s.x += s.vx;
+        s.y += s.vy;
+
+        if (s.x < 0 || s.x > canvas.width) s.vx *= -1;
+        if (s.y < 0 || s.y > canvas.height) s.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#a855f7";
+        ctx.fill();
+
+        if (mouse.x && Math.hypot(mouse.x - s.x, mouse.y - s.y) < 120) {
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, mouse.y);
+            ctx.lineTo(s.x, s.y);
+            ctx.strokeStyle = "rgba(124,58,237,0.3)";
+            ctx.stroke();
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* =========================
+   FIREBASE LOGIN
+========================= */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword,
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAfo4Q0J5NDvarN4WZJ2youBV3rB7YpPpw",
+  authDomain: "ieee-visat-website-69d0c.firebaseapp.com",
+  projectId: "ieee-visat-website-69d0c",
+  storageBucket: "ieee-visat-website-69d0c.firebasestorage.app",
+  messagingSenderId: "758234547940",
+  appId: "1:758234547940:web:efbb90bebc04c4ef31cef1",
+  measurementId: "G-RB7C8DG6GT"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.location.href = "dashboard.html";
+  }
+});
+
+/* =========================
+   LOGIN BUTTON EVENT
+========================= */
+
+const loginBtn = document.querySelector(".login-btn");
+const error = document.getElementById("error");
+
+loginBtn.addEventListener("click", async () => {
+
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    error.style.display = "none";
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+        loginBtn.innerText = "Logging in...";
+        loginBtn.style.opacity = "0.7";
+
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 800);
+
+    } catch (err) {
+        let message = "Login failed";
+
+if (err.code === "auth/user-not-found")
+  message = "User not found";
+else if (err.code === "auth/wrong-password")
+  message = "Incorrect password";
+else if (err.code === "auth/invalid-email")
+  message = "Invalid email format";
+
+error.innerText = message;
+        error.style.display = "block";
+    }
+
+});
+</script>
+
+</body>
+</html>
